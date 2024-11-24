@@ -1,5 +1,6 @@
 #include "elf.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void hexdump(uint8_t *buf, size_t len)
 {
@@ -21,5 +22,20 @@ int main(void)
     }
 
     hexdump(elf_bytes, len);
+
+    if (((struct e_ident *)elf_bytes)->arch == 1) {
+        fprintf(stdout, "ELF file is 32bit\n");
+        struct elf_header32 *h32 = (struct elf_header32 *)elf_bytes;
+
+        fprintf(stdout, "Entry offset: 0x%x\n", h32->entry_addr);
+        fprintf(stdout, "Program header table offset: 0x%x\n", h32->phoff);
+        fprintf(stdout, "Section header table offset: 0x%x\n", h32->shoff);
+    }
+    else if (((struct e_ident *)elf_bytes)->arch == 2) {
+        fprintf(stdout, "ELF file is 64bit\n");
+        struct elf_header64 *h64 = (struct elf_header64 *)elf_bytes;
+    }
+
+    free(elf_bytes);
     return 0;
 }
