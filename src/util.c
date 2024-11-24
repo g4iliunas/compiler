@@ -1,8 +1,8 @@
-#include "elf.h"
+#include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-uint8_t *read_elf(const char *path, size_t *len)
+uint8_t *read_file(const char *path, size_t *len)
 {
     FILE *fp = fopen(path, "rb");
     if (!fp) {

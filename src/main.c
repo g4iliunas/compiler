@@ -1,4 +1,5 @@
 #include "elf.h"
+#include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -84,7 +85,7 @@ void elfdump(uint8_t *elf_bytes)
 int main(void)
 {
     size_t len;
-    uint8_t *elf_bytes = read_elf("main.o", &len);
+    uint8_t *elf_bytes = read_file("main.o", &len);
     if (!elf_bytes) {
         fprintf(stderr, "Failed to read the ELF file\n");
         return 1;
