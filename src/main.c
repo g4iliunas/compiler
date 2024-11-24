@@ -1,20 +1,31 @@
-#include "elf.h"
-#include "util.h"
+#include "tokenizer.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 int main(void)
 {
-    size_t len;
-    uint8_t *elf_bytes = read_file("main.o", &len);
-    if (!elf_bytes) {
-        fprintf(stderr, "Failed to read the ELF file\n");
-        return 1;
+    const uint8_t machine_code[] = "\x31\xC0\xC3\xB8\x05\x00\x00\x00\xC3";
+    TokenList *tokens = tokenize(machine_code, sizeof(machine_code) - 1);
+    printf("tokens: %ld\n", tokens->size);
+
+    TokenNode *node = tokens->head;
+    while (node) {
+        Token *token = &node->token;
+        if (token->type == TOKEN_OPCODE) {
+            printf("opcode: 0x%lx\n", token->value);
+        }
+        else if (token->type == TOKEN_REGISTER) {
+            printf("register: 0x%lx\n", token->value);
+        }
+        else if (token->type == TOKEN_IMMEDIATE) {
+            printf("immediate value: %ld\n", token->value);
+        }
+        else if (token->type == TOKEN_UNKNOWN) {
+            printf("unknown value: %ld\n", token->value);
+        }
+        node = node->next;
     }
 
-    hexdump(elf_bytes, len);
-    elfdump(elf_bytes);
+    token_list_free(tokens);
 
-    free(elf_bytes);
     return 0;
 }

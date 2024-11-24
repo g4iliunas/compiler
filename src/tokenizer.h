@@ -33,6 +33,6 @@ typedef struct {
 TokenList *token_list_new();
 void token_list_free(TokenList *list);
 int token_list_add(TokenList *list, TokenType type, size_t value);
-TokenList *tokenize();
+TokenList *tokenize(const uint8_t *data, size_t len);
 
 #endif

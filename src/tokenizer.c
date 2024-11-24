@@ -48,3 +48,53 @@ int token_list_add(TokenList *list, TokenType type, size_t value)
     list->size++;
     return 0;
 }
+
+TokenList *tokenize(const uint8_t *data, size_t len)
+{
+    TokenList *list = token_list_new();
+    if (!list)
+        return NULL;
+
+    for (size_t i = 0; i < len; i++) {
+        switch (data[i]) {
+        case 0x66: {
+            // tokenize 16bit instructions
+            switch ((data[++i])) {
+            }
+            break;
+        }
+        case 0x31: {
+            // xor /r
+            token_list_add(list, TOKEN_OPCODE, data[i++]);
+            token_list_add(list, TOKEN_REGISTER, data[i]);
+            break;
+        }
+        case 0xc3 ... 0xcb: {
+            // ret
+            token_list_add(list, TOKEN_OPCODE, data[i]);
+            break;
+        }
+
+        // todo: add more mov opcodes
+        case 0x89: {
+            // mov /r (moves to eax)
+            token_list_add(list, TOKEN_OPCODE, data[i++]);
+            token_list_add(list, TOKEN_REGISTER, data[i]);
+            break;
+        }
+        case 0xb8: {
+            // mov rd id (moves to eax)
+            token_list_add(list, TOKEN_OPCODE, data[i++]);
+            token_list_add(list, TOKEN_IMMEDIATE, *(uint32_t *)&data[i]);
+            i += 3; // need to -1
+            break;
+        }
+        default: {
+            token_list_add(list, TOKEN_UNKNOWN, 0);
+            break;
+        }
+        }
+    }
+
+    return list;
+}
