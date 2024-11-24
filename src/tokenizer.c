@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-TokenNodeList *token_list_new()
+TokenList *token_list_new()
 {
-    TokenNodeList *list = (TokenNodeList *)malloc(sizeof(TokenNodeList));
+    TokenList *list = (TokenList *)malloc(sizeof(TokenList));
     if (!list)
         return NULL;
     list->head = NULL;
@@ -12,7 +12,7 @@ TokenNodeList *token_list_new()
     return list;
 }
 
-void token_list_free(TokenNodeList *list)
+void token_list_free(TokenList *list)
 {
     /* free every token in list */
     TokenNode *node = list->head;
@@ -24,7 +24,7 @@ void token_list_free(TokenNodeList *list)
     free(list);
 }
 
-int token_list_add(TokenNodeList *list, TokenType type, size_t value)
+int token_list_add(TokenList *list, TokenType type, size_t value)
 {
     TokenNode *new = (TokenNode *)malloc(sizeof(TokenNode));
     if (!new)

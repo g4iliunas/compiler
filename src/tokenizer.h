@@ -28,10 +28,11 @@ typedef struct token_node {
 typedef struct {
     TokenNode *head;
     size_t size;
-} TokenNodeList;
+} TokenList;
 
-TokenNodeList *token_list_new();
-void token_list_free(TokenNodeList *list);
-int token_list_add(TokenNodeList *list, TokenType type, size_t value);
+TokenList *token_list_new();
+void token_list_free(TokenList *list);
+int token_list_add(TokenList *list, TokenType type, size_t value);
+TokenList *tokenize();
 
 #endif
