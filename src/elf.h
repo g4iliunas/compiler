@@ -49,6 +49,54 @@ struct __attribute__((packed)) elf_header64 {
     struct elf_header_common1 common1;
 };
 
+struct __attribute__((packed)) elf_program_header32 {
+    uint32_t type;
+    uint32_t offset;
+    uint32_t vaddr;
+    uint32_t paddr;
+    uint32_t filesz;
+    uint32_t memsz;
+    uint32_t flags;
+    uint32_t align;
+};
+
+struct __attribute__((packed)) elf_program_header64 {
+    uint32_t type;
+    uint32_t flags;
+    uint64_t offset;
+    uint64_t vaddr;
+    uint64_t paddr;
+    uint64_t filesz;
+    uint64_t memsz;
+    uint64_t align;
+};
+
+struct __attribute__((packed)) elf_section_header32 {
+    uint32_t name;
+    uint32_t type;
+    uint32_t flags;
+    uint32_t addr;
+    uint32_t offset;
+    uint32_t size;
+    uint32_t link;
+    uint32_t info;
+    uint32_t addralign;
+    uint32_t entsize;
+};
+
+struct __attribute__((packed)) elf_section_header64 {
+    uint32_t name;
+    uint32_t type;
+    uint64_t flags;
+    uint64_t addr;
+    uint64_t offset;
+    uint64_t size;
+    uint32_t link;
+    uint32_t info;
+    uint64_t addralign;
+    uint64_t entsize;
+};
+
 uint8_t *read_elf(const char *path, size_t *len);
 
 #endif // ELF_H
