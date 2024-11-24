@@ -69,11 +69,17 @@ void elfdump(uint8_t *elf_bytes)
             if (sh32->type != 0) {
                 const char *section_name =
                     (char *)(elf_bytes + shstrtab->offset + sh32->name);
-                void *section_data = sh32 + sh32->offset;
+                void *section_data = elf_bytes + sh32->offset;
 
                 fprintf(stdout,
                         "Section name: %s, section data is located at %p\n",
                         section_name, section_data);
+
+                fprintf(stdout, "Section data dump:\n");
+                for (size_t i = 0; i < sh32->size; i++) {
+                    fprintf(stdout, "%02x ", ((uint8_t *)section_data)[i]);
+                }
+                fprintf(stdout, "\n====\n");
             }
         }
     }
@@ -102,11 +108,17 @@ void elfdump(uint8_t *elf_bytes)
             if (sh64->type != 0) {
                 const char *section_name =
                     (char *)(elf_bytes + shstrtab->offset + sh64->name);
-                void *section_data = sh64 + sh64->offset;
+                void *section_data = elf_bytes + sh64->offset;
 
                 fprintf(stdout,
                         "Section name: %s, section data is located at %p\n",
                         section_name, section_data);
+
+                fprintf(stdout, "Section data dump:\n");
+                for (size_t i = 0; i < sh64->size; i++) {
+                    fprintf(stdout, "%02x ", ((uint8_t *)section_data)[i]);
+                }
+                fprintf(stdout, "\n====\n");
             }
         }
     }
